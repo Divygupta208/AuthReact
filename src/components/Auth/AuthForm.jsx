@@ -16,11 +16,36 @@ const AuthForm = () => {
 
   const submitHandler = async (event) => {
     event.preventDefault();
-
+    setSending(true);
     if (isLogin) {
+      try {
+        const response = await fetch(
+          "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBQB6v7juLB1ZeieXByybdGUu0tfcnknbs",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              email: emailRef.current.value,
+              password: passwordRef.current.value,
+              returnSecureToken: true,
+            }),
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          setSending(false);
+          notify("Successfully logged in");
+        } else {
+          const data = await response.json();
+          setSending(false);
+          notify(data.error.message);
+        }
+      } catch (err) {
+        console.error(err);
+      }
     } else {
       try {
-        setSending(true);
         const response = await fetch(
           "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBQB6v7juLB1ZeieXByybdGUu0tfcnknbs",
           {
