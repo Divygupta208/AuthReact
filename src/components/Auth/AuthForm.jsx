@@ -1,11 +1,15 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import classes from "./AuthForm.module.css";
+import { AuthContext } from "../../store/AuthContext";
+import { useHistory } from "react-router-dom";
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [sending, setSending] = useState(false);
+  const history = useHistory();
+  const authCtx = useContext(AuthContext);
   const notify = (text) => toast(text);
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -34,8 +38,11 @@ const AuthForm = () => {
 
         if (response.ok) {
           const data = await response.json();
+          authCtx.Login(data.idToken);
+
           setSending(false);
           notify("Successfully logged in");
+          history.replace("/");
         } else {
           const data = await response.json();
           setSending(false);
