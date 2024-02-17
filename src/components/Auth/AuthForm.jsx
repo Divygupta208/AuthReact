@@ -39,7 +39,7 @@ const AuthForm = () => {
         if (response.ok) {
           const data = await response.json();
           authCtx.Login(data.idToken);
-          localStorage.setItem("user", data.idToken);
+
           setSending(false);
           notify("successfully signed in");
           history.replace("/");
