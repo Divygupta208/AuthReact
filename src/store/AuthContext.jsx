@@ -12,14 +12,18 @@ import React from "react";
 const AuthProvider = (props) => {
   const [token, setToken] = useState("");
 
-  const userIsLoggedIn = !!token;
+  let userIsLoggedIn = !!token;
 
+  if (localStorage.getItem("user")) {
+    userIsLoggedIn = true;
+  }
   const loginHandler = (token) => {
     setToken(token);
   };
 
   const logoutHandler = () => {
     setToken(null);
+    localStorage.removeItem("user");
   };
 
   const contextVal = {
