@@ -10,7 +10,7 @@ const AuthForm = () => {
   const [sending, setSending] = useState(false);
   const history = useHistory();
   const authCtx = useContext(AuthContext);
-  const notify = (text) => toast(text);
+
   const emailRef = useRef();
   const passwordRef = useRef();
 
@@ -39,9 +39,8 @@ const AuthForm = () => {
         if (response.ok) {
           const data = await response.json();
           authCtx.Login(data.idToken);
-
           setSending(false);
-          notify("Successfully logged in");
+          notify("successfully signed in");
           history.replace("/");
         } else {
           const data = await response.json();
